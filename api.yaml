@@ -18,34 +18,39 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 tags:
-  - name: Staff
-    description: Everything about Staff
-  - name: Customer
-    description: Everything about customers
+  - name: Admin
+    description: All API available to Admin
   - name: Vendor
-    description: Everything about vendors
+    description: All API available to Vendor
+  - name: Customer
+    description: All API available to customer
+  - name: Staff
+    description: All API for staff resource    
   - name: Product
-    description: Everything about suppliers
+    description: All API for product resource
   - name: Role
-    description: Everything about roles
+    description: All API for Role resource
   - name: Order
-    description: Everything about orders
+    description: All API for order resource
   - name: Logistics
-    description: Everything about logistics and delivery
+    description: All API for logistics resource
   - name: Permissions
-    description: Everything about roles ad Permissions
+    description: All API for permission resource
   - name: Transactions
-    description: Everything about transactions
+    description: All API for transaction resource
   - name: Checkout
     description: Checkout API's
   - name: Review
-    description: All about reviews
+    description: All API for review resource
   - name: Cart
-    description: All about Carts
+    description: All API for cart resource
+  - name: Category
+    description: All API for category resource
 schemes: [http, https]
 host: localhost:3000
 basePath: /api/v1
 paths:
+  /admin:
   /vendor:
     post:
       description: Create a new Vendor
@@ -187,11 +192,12 @@ paths:
                 type: boolean
               message:
                 type: string
-  /staff:
+  /staff/{vendorId}:
     post:
       description: Create a new staff resource
       tags: 
         - Staff
+        - Vendor
       consumes:
         - application/json
       produces:
@@ -202,8 +208,13 @@ paths:
           required: true
           type: string
           example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
         - in: body  
           name: staff
+          required: true
           description: The staff to create.
           schema:
             $ref: '#/definitions/staff'            
@@ -261,6 +272,8 @@ paths:
                   RoleId:
                     type: Number
                     example: 2
+                  vendorId:
+                    type: number
         400:
           description: Bad request error
           schema: 
@@ -293,6 +306,7 @@ paths:
       description: Verify Staff
       tags:
         - Staff
+        - Vendor
       produces:
         - application/json
       parameters:
@@ -303,7 +317,7 @@ paths:
           name: token
           description: staff verification token          
       responses:
-        201:
+        200:
           description: The staff object created
           schema:
             type: object
@@ -371,10 +385,11 @@ paths:
               data:
                 type: object  
   /staff/login:
-    get:
+    post:
       description: Login Staff
       tags:
         - Staff
+        - Vendor
       produces:
         - application/json
       consumes:
@@ -393,7 +408,7 @@ paths:
                 type: string  
       responses:
         200:
-          description: The staff object created
+          description: Sucess
           schema:
             type: object
             properties: 
@@ -462,17 +477,22 @@ paths:
                 type: string 
               data:
                 type: object  
-  /staff/all:
+  /staff/all/{vendorId}:
     get:
-      description: Return all staffs
+      description: Return all vendor staffs
       tags:
         - Staff
+        - Vendor
       parameters:
         - in: header
           name: Authorization
           required: true
           type: string
           example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
       responses:
         200:
           description: okay
@@ -500,15 +520,80 @@ paths:
                 type: string
               data:
                 type: object
-  /staff/{userId}:
-    put: 
-      description: Modify Staff by Id
+  /staff/{userId}/{vendorId}:
+    get: 
+      description: Get Staff by Id
       tags:
         - Staff
+        - Vendor
       parameters:
         - in: path
           name: userId
           description: Id of staff
+          required: true
+          type: string
+        - in: path
+          name: vendorId
+          description: Id of vendor
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/staffresponse'
+        400:
+          description: Not found
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error: 
+                type: string
+              data:
+                type: object
+        404:
+          description: Unauthorized access
+          schema: 
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+    put: 
+      description: Modify Staff by Id
+      tags:
+        - Staff
+        - Vendor
+      parameters:
+        - in: path
+          name: userId
+          description: Id of staff
+          required: true
+          type: string
+        - in: path
+          name: vendorId
+          description: Id of vendor
           required: true
           type: string
         - in: header
@@ -572,10 +657,16 @@ paths:
       description: Delete staff by Id
       tags:
         - Staff
+        - Vendor
       parameters:
         - in: path
           name: userId
           description: Id of staff
+          required: true
+          type: string
+        - in: path
+          name: vendorId
+          description: Id of vendor
           required: true
           type: string
         - in: header
@@ -621,87 +712,40 @@ paths:
                 type: string
               data:
                 type: object
-    get: 
-      description: Get Staff by Id
-      tags:
-        - Staff
-      parameters:
-        - in: path
-          name: userId
-          description: Id of staff
-          required: true
-          type: string
-        - in: header
-          name: Authorization
-          required: true
-          type: string
-          example: Bearer Token
-      responses:
-        200:
-          description: okay
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              message:
-                type: string
-              data:
-                $ref: '#/definitions/staffresponse'
-        400:
-          description: Not found
-          schema:
-            type: object
-            properties:
-              success: 
-                type: boolean
-              message:
-                type: string
-              error: 
-                type: string
-              data:
-                type: object
-        404:
-          description: Unauthorized access
-          schema: 
-            type: object
-            properties:
-              success: 
-                type: boolean
-              message:
-                type: string
-              error:
-                type: string
-              data:
-                type: object
-  /staff/password/{userId}:
+  /staff/password/{userId}/{vendorId}:
     put:
       description: Update staff password
       tags: 
         - Staff
+        - Vendor
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
-       - in: path
-         name: userId
-         description: Id of staff
-         required: true
-         type: string
-       - in: header
-         name: Authorization
-         required: true
-         type: string
-         example: Bearer Token 
-       - in: body
-         name: new Password
-         required: true
-         schema:
-           type: object
-           properties:
-             newPassword:
-               type: string
+        - in: path
+          name: userId
+          description: Id of staff
+          required: true
+          type: string
+        - in: path
+          name: vendorId
+          description: Id of vendor
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token 
+        - in: body
+          name: new Password
+          required: true
+          schema:
+            type: object
+            properties:
+              newPassword:
+                type: string
       responses:
         200:
           description: okay
@@ -1158,11 +1202,12 @@ paths:
                 type: string
               data:
                 type: object
-  /Inventory/product:
+  /Inventory/{vendorId}/product:
     post:
       description: Create a new Product
       tags:
         - Product
+        - Vendor
       produces:
         - application/json
       parameters:
@@ -1171,12 +1216,105 @@ paths:
           required: true
           type: string
           example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
         - in: body
           name: Product
           required: true
           description: Details of product to be created
           schema: 
             $ref: '#/definitions/product'
+      responses:
+        201:
+          description: Product created successfully
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/productresponse'
+        404:
+          description: Not Authorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  /Inventory/all_products/{vendorId}:
+    get:
+      description: Get all vendor products
+      tags:
+        - Product
+        - Vendor
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string        
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/productresponse'
+        404:
+          description: Not Authorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object  
+  /Inventory/{productId}/{vendorId}:
+    get:
+      description: get a product by its Id and vendor Id
+      tags:
+        - Product
+        - Vendor
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          description: Id of product to be returned
+        - in: path
+          name: vendorId
+          required: true
+          description: Id of vendor with product
+        - in: header
+          name: Authorization
+          required: true
+          description: Bearer token
       responses:
         200:
           description: okay
@@ -1202,52 +1340,11 @@ paths:
                 type: string
               data:
                 type: object
-  /Inventory/product/{productId}:
-    delete:
-      description: Modifies a product by its product id
-      tags:
-        - Product
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: Authorization
-          required: true
-          type: string
-          example: Bearer Token
-        - in: path
-          name: productId
-          required: true
-          description: Id of product to be returned
-      responses:
-        200:
-          description: okay
-          schema:
-            type: object
-            properties:
-              success: 
-                type: boolean
-              message:
-                type: string
-              data:
-                $ref: '#/definitions/productresponse'
-        404:
-          description: Not Authorised
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              message:
-                type: string
-              error:
-                type: string
-              data:
-                type: object 
     put:
-      description: Modifies a product by its product id
+      description: Modifies a product by its product id and vendor Id
       tags:
         - Product
+        - Vendor
       produces:
         - application/json
       consumes:
@@ -1258,6 +1355,10 @@ paths:
           required: true
           type: string
           example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          description: Id of vendor with product
         - in: path
           name: productId
           required: true
@@ -1294,17 +1395,27 @@ paths:
                 type: string
               data:
                 type: object
-    get:
-      description: get a product by its product id
+    delete:
+      description: Deletes a product by its product id and vendor Id
       tags:
         - Product
+        - Vendor
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          description: Id of vendor with product
         - in: path
           name: productId
           required: true
-          description: Id of product to be returned
+          description: Id of product to be deleted
       responses:
         200:
           description: okay
@@ -1329,14 +1440,15 @@ paths:
               error:
                 type: string
               data:
-                type: object
+                type: object 
   /Inventory/product/all:
     get:
-      description: Retrieves all Products
+      description: Retrieves all Products in database
       produces:
         - application/json
       tags:
-        - Product      
+        - Product
+        - Admin      
       parameters:
         - in: header
           name: Authorization
@@ -1357,11 +1469,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/productresponse'
-  /Inventory/products:
+  /Inventory/{vendorId}:
     post:
-      description: Bulk Delete of Products using product Id
+      description: Bulk creation of Products
       tags:
         - Product
+        - Vendor
       consumes:
         - application/json
       produces:
@@ -1372,11 +1485,16 @@ paths:
           required: true
           type: string
           example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
         - in: body
           required: true
+          name: Products info
           description: Array of product information
           schema:
-            type: object
+            type: object            
             properties:
               allProducts:
                 type: array
@@ -1421,14 +1539,20 @@ paths:
       description: Bulk Delete of Products using product Id
       tags:
         - Product
+        - Vendor
       parameters:
         - in: header
           name: Authorization
           required: true
           type: string
           example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
         - in: body
           required: true
+          name: Product Id's
           description: Array of product id
           schema:
             type: object
@@ -3564,7 +3688,7 @@ definitions:
         type: string
       metaTitle:
         type: string
-      sellinPrice:
+      sellingPrice:
         type: number
       costPrice:
         type: number
@@ -3575,6 +3699,8 @@ definitions:
       longDescription:
         type: string
       expiryDate:
+        type: string
+      categoryId:
         type: string
   staff:
     type: object
@@ -3621,6 +3747,8 @@ definitions:
       updatedAt:
         type: string
       createdAt:
+        type: string
+      vendorId:
         type: string
   review:
     type: object

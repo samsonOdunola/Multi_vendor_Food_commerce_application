@@ -12,13 +12,26 @@ const addStaff = async (req, res) => {
     const {
       firstName, lastName, middleName, phoneNumber, email, password, roleId,
     } = req.body;
+    const { vendorId } = req.params;
     const passwordHash = await hashPassword(password);
     const verificationToken = crypto.randomBytes(32).toString('hex');
     await sendMail(email, verificationToken);
 
     newStaff = await Staff.create({
-      firstName, lastName, middleName, phoneNumber, email, passwordHash, verificationToken,
+      firstName,
+      lastName,
+      middleName,
+      phoneNumber,
+      email,
+      passwordHash,
+      verificationToken,
+      VendorId: vendorId,
     });
+    if (!newStaff) {
+      return res.status(response.BAD_REQUEST).json({
+        success: false, message: 'Error in creating resource', error: 'Resource not created', data: {},
+      });
+    }
 
     await newStaff.setRole(roleId);
   } catch (err) {
@@ -35,6 +48,12 @@ const verifyStaff = async (req, res) => {
     const { token, email } = req.query;
 
     user = await Staff.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(response.BAD_REQUEST).json({
+        success: false, message: 'Verification failed', error: 'User does not exist', data: {},
+      });
+    }
 
     if (user.verificationToken === token) {
       await user.update({ verified: true });
@@ -92,13 +111,13 @@ const editStaff = async (req, res) => {
     const {
       firstName, lastName, middleName, phoneNumber,
     } = req.body;
-    const { userId } = req.params;
+    const { userId, vendorId } = req.params;
     if (!userId) {
       return res.status(response.BAD_REQUEST).json({
         success: false, message: 'User Id not supplied', error: 'user id not supplied', data: {},
       });
     }
-    const user = await Staff.findOne({ id: userId });
+    const user = await Staff.findOne({ id: userId, VendorId: vendorId });
     if (!user) {
       return res.status(response.NOT_FOUND).json({
         success: false, message: 'User not found', error: 'user not found', data: {},
@@ -126,8 +145,8 @@ const editStaff = async (req, res) => {
 
 const removeStaff = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const staff = await Staff.destroy({ where: { id: userId } });
+    const { userId, vendorId } = req.params;
+    const staff = await Staff.destroy({ where: { id: userId, VendorId: vendorId } });
     if (staff !== 1) {
       return res.status(response.NOT_FOUND).json({
         success: false, message: 'Error in deleting resource', error: 'Error in deleting resource', data: {},
@@ -168,7 +187,8 @@ const resetPassword = async (req, res) => {
 const getAllStaff = async (req, res) => {
   let allStaff = [];
   try {
-    allStaff = await Staff.findAll({ where: {} });
+    const { vendorId } = req.params;
+    allStaff = await Staff.findAll({ where: { VendorId: vendorId } });
   } catch (err) {
     return res.status(response.BAD_REQUEST).json({
       success: false, message: 'Error in getting resources', error: err.message, data: {},
@@ -181,8 +201,8 @@ const getAllStaff = async (req, res) => {
 const getStaff = async (req, res) => {
   let staff;
   try {
-    const { userId } = req.params;
-    staff = await Staff.findOne({ where: { id: userId } });
+    const { userId, vendorId } = req.params;
+    staff = await Staff.findOne({ where: { id: userId, VendorId: vendorId } });
 
     if (!staff) {
       return res.status(response.NOT_FOUND).json({

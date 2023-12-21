@@ -3,17 +3,22 @@ const express = require('express');
 const router = express.Router();
 const {
   getAllProducts, getProductbyId, addNewInventoryItem, deleteInventoryItem,
-  modifyProduct, bulkAdd, bulkDelete,
+  modifyProduct, bulkAdd, bulkDelete, getAllVendorProduct,
 } = require('../controllers/inventory');
+
 const productAccess = require('../middleware/inventoryAuthorisation');
 
 // Inventory
-router.post('/product', productAccess.createProduct, addNewInventoryItem);
-router.get('/product/:productId', getProductbyId);
+router.get('/all_products/:vendorId', productAccess.deleteAnyProduct, getAllVendorProduct);
+router.post('/:vendorId/product', productAccess.createProduct, addNewInventoryItem);
+router.get('/:productId/:vendorId', getProductbyId);
+router.delete('/:productId/:vendorId', productAccess.deleteAnyProduct, deleteInventoryItem);
+router.put('/:productId/:vendorId', productAccess.updateAnyProduct, modifyProduct);
 router.get('/all', getAllProducts);
-router.delete('/product/:productId', productAccess.deleteAnyProduct, deleteInventoryItem);
-router.put('/product/:productId', productAccess.updateAnyProduct, modifyProduct);
-router.delete('/products', productAccess.deleteAnyProduct, bulkDelete);
-router.post('/products', productAccess.createProduct, bulkAdd);
+router.delete('/:vendorId', productAccess.deleteAnyProduct, bulkDelete);
+
+router.post('/:vendorId', productAccess.createProduct, bulkAdd);
+
+router.get('/all_products/:vendorId', productAccess.deleteAnyProduct, getAllVendorProduct);
 
 module.exports = router;

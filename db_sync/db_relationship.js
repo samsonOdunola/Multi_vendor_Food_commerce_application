@@ -8,6 +8,7 @@ const OrderItem = require('../models/order_item');
 
 const ProductImage = require('../models/product_images');
 const ProductReview = require('../models/product_review');
+const ProductCategory = require('../models/product_category');
 const PromoCode = require('../models/promoCode');
 const Transaction = require('../models/transaction');
 const Address = require('../models/address');
@@ -46,6 +47,7 @@ const syncDb = () => {
   // Define Product associations
   Product.belongsToMany(Order, { through: OrderItem });
   Product.belongsToMany(Cart, { through: CartItem });
+  Product.belongsToMany(Category, { through: ProductCategory });
   Product.belongsTo(Vendor);
 
   Product.hasMany(ProductReview);
@@ -54,7 +56,7 @@ const syncDb = () => {
   Product.hasMany(ProductImage);
   ProductImage.belongsTo(Product);
 
-  Category.hasMany(Product);
+  Category.belongsToMany(Product, { through: ProductCategory });
 
   // Define Cart Association
   Cart.belongsToMany(Product, { through: CartItem });
@@ -70,6 +72,7 @@ const syncDb = () => {
   Role.hasOne(Staff);
   Role.hasOne(Customer, { foreignKey: { name: 'RoleId', defaultValue: 1 } });
   Role.hasMany(RolePermission);
+  Role.hasOne(Vendor, { foreignKey: { name: 'RoleId', defaultValue: 2 } });
 };
 
 module.exports = syncDb;

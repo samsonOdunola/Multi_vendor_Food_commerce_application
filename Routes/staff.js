@@ -14,14 +14,14 @@ const {
 const staffAccess = require('../middleware/staffAuthorisation');
 // Staff Logic
 router.get('/', verifyStaff);
-router.get('/login', loginStaff);
-router.post('/', staffAccess.createStaff, addStaff);
-router.get('/all', staffAccess.readAnyStaff, getAllStaff);
-router.get('/:userId', staffAccess.readOwnStaff, getStaff);
+router.post('/login', loginStaff);
+router.post('/:vendorId', staffAccess.createStaff, addStaff);
+router.get('/all/:vendorId', staffAccess.readAnyStaff, getAllStaff);
+router.get('/:userId/:vendorId', staffAccess.readOwnStaff, getStaff);
 
-router.put('/:userId', staffAccess.updateOwnStaff, editStaff);
-router.put('/password/:userId', staffAccess.updateOwnStaff, resetPassword);
-router.delete('/:userId', staffAccess.deleteAnyStaff, removeStaff);
+router.put('/:userId/:vendorId', staffAccess.updateOwnStaff, editStaff);
+router.put('/password/:userId/:vendorId', staffAccess.updateOwnStaff, resetPassword);
+router.delete('/:userId/:vendorId', staffAccess.deleteAnyStaff, removeStaff);
 
 // Roles and Permissions
 router.post('/role', roleAccess.createRole, createRole);
