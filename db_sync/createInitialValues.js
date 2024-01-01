@@ -25,6 +25,10 @@ const initRoles = async () => {
     if (ownerRole.length === 0) {
       await Role.create({ title: 'Owner' });
     }
+    const adminRole = await Role.findAll({ where: { title: 'Admin' } });
+    if (adminRole.length === 0) {
+      await Role.create({ title: 'Admin' });
+    }
   } catch (err) {
     return 'Error in creating init roles';
   }

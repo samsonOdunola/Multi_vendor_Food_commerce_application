@@ -6,7 +6,7 @@ const transactionAccess = require('../middleware/transactionAuthorization');
 
 const router = express.Router();
 
-router.get('/', transactionAccess.readAny, getAllTransaction);
+router.get('/:vendorId', transactionAccess.readAny, getAllTransaction);
 
 router.put('/:transactionReference', transactionAccess.updateAny, verifyTransaction);
 

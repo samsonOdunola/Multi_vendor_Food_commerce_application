@@ -16,6 +16,7 @@ const promoRoute = require('./Routes/promocode');
 const reportRoute = require('./Routes/report');
 const transactionRoute = require('./Routes/transaction');
 const vendorRoute = require('./Routes/vendor');
+const adminRoute = require('./Routes/admin');
 
 const App = express();
 App.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerJsDocs));
@@ -36,4 +37,5 @@ App.use('/api/v1/promo', promoRoute);
 App.use('/api/v1/report', reportRoute);
 App.use('/api/v1/transaction', transactionRoute);
 App.use('/api/v1/vendor', vendorRoute);
+App.use('/api/v1/admin', adminRoute);
 module.exports = App;

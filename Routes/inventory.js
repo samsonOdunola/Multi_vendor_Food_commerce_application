@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const {
-  getAllProducts, getProductbyId, addNewInventoryItem, deleteInventoryItem,
+  getProductbyId, addNewInventoryItem, deleteInventoryItem,
   modifyProduct, bulkAdd, bulkDelete, getAllVendorProduct,
 } = require('../controllers/inventory');
 
@@ -14,7 +14,7 @@ router.post('/:vendorId/product', productAccess.createProduct, addNewInventoryIt
 router.get('/:productId/:vendorId', getProductbyId);
 router.delete('/:productId/:vendorId', productAccess.deleteAnyProduct, deleteInventoryItem);
 router.put('/:productId/:vendorId', productAccess.updateAnyProduct, modifyProduct);
-router.get('/all', getAllProducts);
+
 router.delete('/:vendorId', productAccess.deleteAnyProduct, bulkDelete);
 
 router.post('/:vendorId', productAccess.createProduct, bulkAdd);

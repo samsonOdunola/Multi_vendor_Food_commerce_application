@@ -32,6 +32,9 @@ const syncDb = () => {
   // Define Vendor asssociation
   Vendor.hasMany(Product);
   Vendor.hasMany(Staff);
+  Vendor.hasMany(Order);
+  Vendor.hasMany(Transaction);
+  Vendor.hasMany(ProductReview);
 
   // Define Promo code association
   PromoCode.hasMany(Order);

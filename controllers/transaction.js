@@ -18,7 +18,13 @@ const getTransactionbyReference = async (req, res) => {
 const getAllTransaction = async (req, res) => {
   let transactions = [];
   try {
-    transactions = await Transaction.findAll();
+    const { vendorId } = req.params;
+    const { orderId } = req.query;
+
+    if (orderId) {
+      transactions = await Transaction.findAll({ where: { VendorId: vendorId, OrderId: orderId } });
+    }
+    transactions = await Transaction.findAll({ where: { VendorId: vendorId } });
   } catch (err) {
     return res.status(response.BAD_REQUEST).json({
       success: 'false', message: 'Error in retrieving Transaction', error: err.message, data: { },
