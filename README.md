@@ -1,9 +1,10 @@
-# Food E-commerce Backend Application
+# Food Multi Vendor E-commerce Backend Application
 
-This repository contains the source code for a Node.js-based backend application for a food delivery service. This backend provides the necessary functionalities to manage restaurants, menu items, orders, and user accounts for a food delivery platform.
+This repository contains the source code for a Node.js-based backend application for a multi vendor food delivery service. This backend provides the necessary functionalities to manage restaurants, menu items, orders, and user accounts for a food delivery platform.
 
 ## Table of Contents
 
+- [Application Features](#application-features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -13,6 +14,14 @@ This repository contains the source code for a Node.js-based backend application
 - [Database Schema](#database-schema)
 - [Contributing](#contributing)
 
+
+## Application Features
+
+* **RBAC(Role Based Access Control)**: Dynamic Role based access to resource which can be set by vendor.
+
+* **Unique Delivery Authentication**: This applicaton uses a unique two step delivery method. a code is sent to the customer when an order is allowed to be delivered. The delivery person then inputs this code into the system and the delivery is confirmed.
+
+* **Third Party Payment Facilitator**: A third party payment gateway is incoportated into this application to enable seamless access to the payment for customers.
 
 ## Prerequisites
 
@@ -27,13 +36,13 @@ Before setting up and running this application, make sure you have the following
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/samsonOdunola/saas-foodxcommerce-project.git
+   git clone https://github.com/Lampnet-Technologies/Fudex-Backend.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd saas-foodxcommerce-project
+   cd Fudex-Backend
    ```
 
 3. Install the project dependencies:
@@ -89,34 +98,25 @@ The server will start and listen on the port specified in your `.env` file (defa
 
 The application provides the following API endpoints:
 
-- **api/v1/staff**:
-  - POST: Creates a new staff.
+- **api/v1/admin/role**:
+  - POST: Creates a new role for the entire application.
 
-- **/api/v1/staff/?email&token**:
-  - GET: Verify a staff by email and token. 
+- **/api/v1/admin/role/:roleId**:
+  - GET: Retrieve a role by Id. 
 
-- **/api/v1/staff/login**:
-  - GET: Logs in a staff and issue a token.  
+- **/api/v1/admin/role/all**:
+  - GET: Returns all roles in the application.  
 
-- **/api/v1/staff/all**:
-  - GET: Retrieve all staffs.  
+- **/api/v1/admin/role/permission/:roleId**:
+  - POST: Add Permission to roles.  
+  - GET: Returns permission assigned to role
+  - PUT: Updates permission for roles
 
-- **/api/v1/staff/:userId**:
-  - PUT: Modifies a staff.
-  - DELETE: Delletes a staff.
-  - GET: Finds a staff by ID
+- **/api/v1/admin/category**:
+  - POST: Creates categories for the system.  
+  - GET: Returns all categories for the system
 
-- **/api/v1/staff/password/:userId**:
-  - PUT: Resets a staff password  
-
-- **/api/v1.staff/roler**:
-  - POST: Creates a new Role
-
-- **/api/v1/staff/role/permission/:roleId**:
-  - POST: Add permissions to a role.
-  - PUT: Updates Permissions for a role
-
-Please refer to the [swagger documentation](http://localhost:3000/api-docs/) after running the application for detailed information API endpoints.
+Please refer to the [swagger documentation](http://localhost:3000/api-docs/) after running the application for full and detailed information API endpoints.
 
 ## Database Schema
 

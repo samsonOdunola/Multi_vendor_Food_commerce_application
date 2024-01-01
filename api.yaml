@@ -297,7 +297,7 @@ paths:
               data:
                 type: object
     get:
-      description: Add permission to role.
+      description: Returns permissions available to role.
       tags:
         - Role
         - Admin
