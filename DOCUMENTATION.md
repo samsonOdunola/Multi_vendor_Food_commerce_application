@@ -16,7 +16,7 @@
 * Vendor
 
 ## Roles
-* Owner
+* Vendor
 * Admin
 * Inventory
 * Logistics

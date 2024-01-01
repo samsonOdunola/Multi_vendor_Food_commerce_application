@@ -23,6 +23,8 @@ This repository contains the source code for a Node.js-based backend application
 
 * **Third Party Payment Facilitator**: A third party payment gateway is incoportated into this application to enable seamless access to the payment for customers.
 
+* **Inbuilt Paramerters**: On startup, the application is populated with hardcoded parameters such as roles, permissions and Resources. The list of available resources and inbuilt parameters can be found in the [documentation file](/DOCUMENTATION.md)
+
 ## Prerequisites
 
 Before setting up and running this application, make sure you have the following prerequisites installed on your system:
