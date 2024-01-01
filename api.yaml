@@ -1,0 +1,4271 @@
+swagger: "2.0"
+info:
+  title: Multi Vendor E-Commerce App
+  description: This is the collection of API's for saaas food commerce application
+  version: 1.0
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: odunolasamson@yahoo.com
+  licence:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  servers:
+    - url: "http://localhost:3000/api/v1"
+      description: This is my local server
+    - url: "xxxxxxxxxxx"
+      description: This is the deployed server
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+tags:
+  - name: Admin
+    description: All API available to Admin
+  - name: Vendor
+    description: All API available to Vendor
+  - name: Customer
+    description: All API available to customer
+  - name: Staff
+    description: All API for staff resource    
+  - name: Product
+    description: All API for product resource
+  - name: Role
+    description: All API for Role resource
+  - name: Order
+    description: All API for order resource
+  - name: Logistics
+    description: All API for logistics resource
+  - name: Permissions
+    description: All API for permission resource
+  - name: Transactions
+    description: All API for transaction resource
+  - name: Checkout
+    description: Checkout API's
+  - name: Review
+    description: All API for review resource
+  - name: Cart
+    description: All API for cart resource
+  - name: Category
+    description: All API for category resource
+schemes: [http, https]
+host: localhost:3000
+basePath: /api/v1
+paths:
+  /admin/role:
+    post:
+      description: Create a new role
+      tags:
+        - Admin
+        - Role
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: body
+          name: role title
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+        404:
+          description: unathorised access
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  /admin/role/{roleId}:
+    get:
+      description: retrieve role by role id
+      tags:
+        - Admin
+        - Role
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: roleId
+          description: Id of role
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+      responses:
+        400:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  title:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string      
+  /admin/role/all:
+    get:
+      description: Return all roles
+      tags:
+        - Admin
+        - Role
+      parameters:
+        - in: path
+          name: roleId
+          description: Id of role
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        400:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  title:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+  /admin/role/permission/{roleId}:
+    post:
+      description: Add Permission to role.
+      tags:
+        - Role
+        - Admin
+        - Permissions
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: roleId
+          description: Id of role
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: body
+          name: permissions to add
+          required: true
+          schema:
+            type: object
+            properties:
+              permissions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    resource:
+                      type: string
+                    readOwn:
+                      type: string
+                    readAny:
+                      type: string
+                    write:
+                      type: string
+                    removeAny:
+                      type: string
+                    removeOwn:
+                      type: string
+                    updateAny:
+                      type: string
+                    updateown:
+                      type: string  
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message: 
+                type: string
+              data:
+                type: object
+        400:
+          description: Role not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+        404:
+          description: Unauthorized access
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+    get:
+      description: Add permission to role.
+      tags:
+        - Role
+        - Admin
+        - Permissions
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: roleId
+          description: Id of role
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: body
+          name: permissions to add
+          required: true
+          schema:
+            type: object
+            properties:
+              permissions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    resource:
+                      type: string
+                    readOwn:
+                      type: string
+                    readAny:
+                      type: string
+                    write:
+                      type: string
+                    removeAny:
+                      type: string
+                    removeOwn:
+                      type: string
+                    updateAny:
+                      type: string
+                    updateown:
+                      type: string  
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message: 
+                type: string
+              data:
+                type: object
+        400:
+          description: Role not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+        404:
+          description: Unauthorized access
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+    put:
+      description: Update Role permissions.
+      tags:
+        - Role
+        - Admin
+        - Permissions
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: roleId
+          description: Id of role
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: body
+          name: permissions to add
+          required: true
+          schema:
+            type: object
+            properties:
+              permissions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    resource:
+                      type: string
+                    readOwn:
+                      type: string
+                    readAny:
+                      type: string
+                    write:
+                      type: string
+                    removeAny:
+                      type: string
+                    removeOwn:
+                      type: string
+                    updateAny:
+                      type: string
+                    updateown:
+                      type: string  
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message: 
+                type: string
+              data:
+                type: object
+        400:
+          description: Role not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+        404:
+          description: Unauthorized access
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  /admin/category:
+    post:
+      description: Create categories for the system
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - Admin
+        - Category
+      parameters:
+        - in: body
+          name: Category Details
+          required: true
+          type: object
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+      responses:
+        201:
+          description: created
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data: 
+                type: object
+                properties:
+        400:
+          description: bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+        500:
+          description: Server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+    get:
+      description: Returns all category
+      produces: 
+        - application/json
+      tags:
+        - Admin
+        - Category      
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data: 
+                type: object
+                properties:
+                  category:
+                    type: array
+                    items:
+        400:
+          description: bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+        500:
+          description: Server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:           
+  /admin/category/{categoryId}:
+    get:
+      description: Return a category object by Id
+      produces: 
+        - application/json
+      tags:
+        - Admin
+        - Category
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data: 
+                type: object
+                properties:
+        400:
+          description: bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+        500:
+          description: Server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+    put:
+      description: Modifies category object by Id
+      produces: 
+        - application/json
+      tags:
+        - Admin
+        - Category
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          type: string
+        - in: body
+          name: category details
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data: 
+                type: object
+                properties:
+        400:
+          description: bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+        500:
+          description: Server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+    delete:
+      description: Deletes a category object by Id
+      produces: 
+        - application/json
+      tags:
+        - Admin
+        - Category
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data: 
+                type: object
+                properties:
+        400:
+          description: bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+        500:
+          description: Server error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:  
+  /admin/inventory/all:
+    get:
+      description: Retrieves all Products in database
+      produces:
+        - application/json
+      tags:
+        - Product
+        - Admin      
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+      responses:
+        200:
+          description: An array of product objects
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message: 
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/productresponse'
+  
+  /vendor:
+    post:
+      description: Create a new Vendor
+      tags:
+        - Vendor
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body     
+          name: vendor 
+          description: Vendor Details
+          schema:
+            type: object
+            properties:
+              name:
+                type: string                
+              email:
+                type: string                
+              country:
+                type: string                
+              password:
+                type: string                
+      responses:
+        201:
+          description: Created
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+        400:
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+  /vendor/verify/?email&token:
+    get:
+      description: Verify Vendor
+      tags:
+        - Vendor
+      produces:
+        - application/json
+      parameters:
+        - in: query     
+          name: email
+          description: Vendor email
+          type: string
+        - in: query
+          name: token
+          description: verification token
+          type: string                
+      responses:
+        200:
+          description: Created
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+        400:
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:  
+  /vendor/login:
+    post:
+      description: Vendor Login Api
+      tags:
+        - Vendor
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body    
+          description: Vendor Details
+          name: vendor
+          schema:
+            type: object
+            properties:
+              email:
+                type: string                
+              password:
+                type: string  
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+        400:
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+                properties:
+        404:
+          description: Not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+  /vendor/orders/{vendorId}:
+    get:
+      description: return all orders for a vendor
+      produces:
+        - application/json
+      tags:
+        - Vendor
+        - Order
+      parameters:
+        - in: path
+          name: vendorId
+          description: Id of vendor
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  allOrders:
+                    type: array
+                    items:
+        400:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties: 
+  /vendor/order/{vendorId}/{orderId}:
+    get:
+      description: return a paticular order for a vendor
+      produces:
+        - application/json
+      tags:
+        - Vendor
+        - Order
+      parameters:
+        - in: path
+          name: vendorId
+          description: Id of vendor
+          required: true
+          type: string
+        - in: path
+          name: orderId
+          description: Id of order
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:                  
+        400:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+  /vendor/reviews/{vendorId}/?{productId}:
+    get:
+      description: Return reviews for a vendor, can be queried by product Id
+      produces:
+        - application/json
+      tags:
+        - Vendor
+        - Review
+      parameters:
+        - in: path
+          name: vendorId
+          description: Id of vendor
+          required: true
+          type: string
+        - in: query
+          name: productId
+          description: Id of Query product
+          required: false
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:                  
+        400:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+  
+  /staff/{vendorId}:
+    post:
+      description: Create a new staff resource
+      tags: 
+        - Staff
+        - Vendor
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
+        - in: body  
+          name: staff
+          required: true
+          description: The staff to create.
+          schema:
+            $ref: '#/definitions/staff'            
+      responses:
+        201:
+          description: The staff object created
+          schema:
+            type: object
+            properties: 
+              success: 
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Resource created
+              data:
+                type: object
+                properties:
+                  verified: 
+                    type: boolean
+                    example: false
+                  verifiedPhoneNumber:
+                    type: boolean
+                    example: false
+                  id:
+                    type: Number
+                    example: 2
+                  firstName:
+                    type: string
+                    example: Sam
+                  lastName:
+                    type: string
+                    example: john
+                  middleName:
+                    type: string
+                    example: sarah
+                  phoneNumber:
+                    type: string
+                    example: 1222322424
+                  email:
+                    type: string
+                    example: john@example.com
+                  passwordHash:
+                    type: string
+                    example: wddsfsfsfdfefafaDD#$#RFSS
+                  verificationToken:
+                    type: string
+                    example: adadsdsdssdsdadadadssffs
+                  updatedAt:
+                    type: string
+                    example: 2023-11-11T18:11:16.896Z
+                  createdAt:
+                    type: string
+                    example: 2023-11-11T18:11:16.896Z
+                  RoleId:
+                    type: Number
+                    example: 2
+                  vendorId:
+                    type: number
+        400:
+          description: Bad request error
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+                example: Error in creating Resource
+              error:
+                type: string 
+              data:
+                type: object  
+        404:
+          description: unauthorized Access
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string              
+              error:
+                type: string
+              data: 
+                type: object 
+  /staff/?email&token:
+    get:
+      description: Verify Staff
+      tags:
+        - Staff
+        - Vendor
+      produces:
+        - application/json
+      parameters:
+        - in: query  
+          name: email
+          description: staff email.
+        - in: query
+          name: token
+          description: staff verification token          
+      responses:
+        200:
+          description: The staff object created
+          schema:
+            type: object
+            properties: 
+              success: 
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Resource created
+              data:
+                type: object
+                properties:
+                  verified: 
+                    type: boolean
+                    example: false
+                  verifiedPhoneNumber:
+                    type: boolean
+                    example: false
+                  id:
+                    type: Number
+                    example: 2
+                  firstName:
+                    type: string
+                    example: Sam
+                  lastName:
+                    type: string
+                    example: john
+                  middleName:
+                    type: string
+                    example: sarah
+                  phoneNumber:
+                    type: string
+                    example: 1222322424
+                  email:
+                    type: string
+                    example: john@example.com
+                  passwordHash:
+                    type: string
+                    example: wddsfsfsfdfefafaDD#$#RFSS
+                  verificationToken:
+                    type: string
+                    example: adadsdsdssdsdadadadssffs
+                  updatedAt:
+                    type: string
+                    example: 2023-11-11T18:11:16.896Z
+                  createdAt:
+                    type: string
+                    example: 2023-11-11T18:11:16.896Z
+                  RoleId:
+                    type: Number
+                    example: 2              
+        400:
+          description: Bad request error
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+                example: Error in creating Resource
+              error:
+                type: string 
+              data:
+                type: object  
+  /staff/login:
+    post:
+      description: Login Staff
+      tags:
+        - Staff
+        - Vendor
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body  
+          name: Log in details
+          description: email and password of staff 
+          required: true         
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string  
+      responses:
+        200:
+          description: Sucess
+          schema:
+            type: object
+            properties: 
+              success: 
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Resource created              
+              data:
+                type: object
+                properties:
+                  verified: 
+                    type: boolean
+                    example: false
+                  verifiedPhoneNumber:
+                    type: boolean
+                    example: false
+                  id:
+                    type: Number
+                    example: 2
+                  firstName:
+                    type: string
+                    example: Sam
+                  lastName:
+                    type: string
+                    example: john
+                  middleName:
+                    type: string
+                    example: sarah
+                  phoneNumber:
+                    type: string
+                    example: 1222322424
+                  email:
+                    type: string
+                    example: john@example.com
+                  passwordHash:
+                    type: string
+                    example: wddsfsfsfdfefafaDD#$#RFSS
+                  verificationToken:
+                    type: string
+                    example: adadsdsdssdsdadadadssffs
+                  updatedAt:
+                    type: string
+                    example: 2023-11-11T18:11:16.896Z
+                  createdAt:
+                    type: string
+                    example: 2023-11-11T18:11:16.896Z
+                  RoleId:
+                    type: Number
+                    example: 2
+              token:
+                type: string
+                example: wwdwdww9wwr383i202042b2292              
+        400:
+          description: Bad request error
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+                example: Error in creating Resource
+              error:
+                type: string 
+              data:
+                type: object  
+  /staff/all/{vendorId}:
+    get:
+      description: Return all vendor staffs
+      tags:
+        - Staff
+        - Vendor
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/staffresponse'              
+        404:
+          description: unathorised access
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  /staff/{userId}/{vendorId}:
+    get: 
+      description: Get Staff by Id
+      tags:
+        - Staff
+        - Vendor
+      parameters:
+        - in: path
+          name: userId
+          description: Id of staff
+          required: true
+          type: string
+        - in: path
+          name: vendorId
+          description: Id of vendor
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/staffresponse'
+        400:
+          description: Not found
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error: 
+                type: string
+              data:
+                type: object
+        404:
+          description: Unauthorized access
+          schema: 
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+    put: 
+      description: Modify Staff by Id
+      tags:
+        - Staff
+        - Vendor
+      parameters:
+        - in: path
+          name: userId
+          description: Id of staff
+          required: true
+          type: string
+        - in: path
+          name: vendorId
+          description: Id of vendor
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: body
+          name: user details
+          required: true
+          schema:
+            type: object
+            properties:
+              firstName:
+                type: string
+              lastName:
+                type: string
+              middleName:
+                type: string
+              phoneNumber:
+                type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/staffresponse'
+        400:
+          description: Not found
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error: 
+                type: string
+              data:
+                type: object
+        404:
+          description: Unauthorized access
+          schema: 
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+    delete: 
+      description: Delete staff by Id
+      tags:
+        - Staff
+        - Vendor
+      parameters:
+        - in: path
+          name: userId
+          description: Id of staff
+          required: true
+          type: string
+        - in: path
+          name: vendorId
+          description: Id of vendor
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/staffresponse'
+        400:
+          description: Not found
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error: 
+                type: string
+              data:
+                type: object
+        404:
+          description: Unauthorized access
+          schema: 
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  /staff/password/{userId}/{vendorId}:
+    put:
+      description: Update staff password
+      tags: 
+        - Staff
+        - Vendor
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          description: Id of staff
+          required: true
+          type: string
+        - in: path
+          name: vendorId
+          description: Id of vendor
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token 
+        - in: body
+          name: new Password
+          required: true
+          schema:
+            type: object
+            properties:
+              newPassword:
+                type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: Not found
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error: 
+                type: string
+              data:
+                type: object
+        404:
+          description: Unauthorized access
+          schema: 
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  
+  /Inventory/{vendorId}/product:
+    post:
+      description: Create a new Product
+      tags:
+        - Product
+        - Vendor
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
+        - in: body
+          name: Product
+          required: true
+          description: Details of product to be created
+          schema: 
+            $ref: '#/definitions/product'
+      responses:
+        201:
+          description: Product created successfully
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/productresponse'
+        404:
+          description: Not Authorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  /Inventory/all_products/{vendorId}:
+    get:
+      description: Get all vendor products
+      tags:
+        - Product
+        - Vendor
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string        
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/productresponse'
+        404:
+          description: Not Authorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object  
+  /Inventory/{productId}/{vendorId}:
+    get:
+      description: get a product by its Id and vendor Id
+      tags:
+        - Product
+        - Vendor
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          description: Id of product to be returned
+        - in: path
+          name: vendorId
+          required: true
+          description: Id of vendor with product
+        - in: header
+          name: Authorization
+          required: true
+          description: Bearer token
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/productresponse'
+        404:
+          description: Not Authorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+    put:
+      description: Modifies a product by its product id and vendor Id
+      tags:
+        - Product
+        - Vendor
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          description: Id of vendor with product
+        - in: path
+          name: productId
+          required: true
+          description: Id of product to be returned
+        - in: body
+          name: Modification details
+          required: true
+          schema:
+            type: object
+            $ref: '#/definitions/product'          
+          
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/productresponse'
+        404:
+          description: Not Authorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+    delete:
+      description: Deletes a product by its product id and vendor Id
+      tags:
+        - Product
+        - Vendor
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          description: Id of vendor with product
+        - in: path
+          name: productId
+          required: true
+          description: Id of product to be deleted
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/productresponse'
+        404:
+          description: Not Authorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object 
+  
+  /Inventory/{vendorId}:
+    post:
+      description: Bulk creation of Products
+      tags:
+        - Product
+        - Vendor
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
+        - in: body
+          required: true
+          name: Products info
+          description: Array of product information
+          schema:
+            type: object            
+            properties:
+              allProducts:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/definitions/product'  
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        401:
+          description: Unauthorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        500:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+    delete:
+      description: Bulk Delete of Products using product Id
+      tags:
+        - Product
+        - Vendor
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: vendorId
+          required: true
+          type: string
+        - in: body
+          required: true
+          name: Product Id's
+          description: Array of product id
+          schema:
+            type: object
+            properties:
+              products:
+                type: array 
+                items:
+                  type: number  
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        401:
+          description: Unauthorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        500:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /product/like/{productId}:
+    put:
+      description: like a Product via product Id
+      tags:
+        - Product
+        - Customer
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  
+  /customer/signup:
+    post:
+      description: create a user
+      tags:
+        - Customer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          required: true
+          schema:
+            $ref: '#/definitions/customer'
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/customerResponse'
+        400:
+          description:
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object  
+  /customer/verify?email&token:
+    post:
+      description: verify customer
+      tags:
+        - Customer
+      produces:
+        - application/json
+      parameters:
+        - in: query  
+          name: email
+          required: true
+          description: Customer email.
+        - in: query
+          name: token
+          required: true
+          description: customer verification token
+      responses:
+        200:
+          description: Customer verified
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/customerResponse'
+        400:
+          description: Error
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  /customer/login:
+    get:
+      description: login customer
+      tags:
+        - Customer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        200:
+          description: okay
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/customerResponse'
+              token:
+                type: string
+        400:
+          description: Not found
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  /customer/address/{userId}:
+    post:
+      description: Create new Address
+      tags:
+        - Customer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: userId
+          required: true
+          type: string          
+        - in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              line1:
+                type: string
+              line2:
+                type: string
+              city:
+                type: string
+              state:
+                type: string
+              country:
+                type: string
+              nearerstLandmark:
+                type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  line1:
+                    type: string
+                  line2:
+                    type: string
+                  city:
+                    type: string
+                  state:
+                    type: string
+                  country:
+                    type: string
+                  nearerstLandmark:
+                    type: string
+                  defaultAddress: 
+                    type: boolean
+                  updatedAt:
+                    type: string
+                  createdAt:
+                    type: string
+        400:
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              error:
+                type: string
+              data:
+                type: object
+  /customer/address/{userId}/{addressId}:
+    put:
+      description: Update Address by id
+      tags:
+        - Customer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: userId
+          required: true
+          type: string 
+        - in: path
+          name: addressId
+          required: true
+          type: string  
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#definitions/addressResponse'
+        400:
+          $ref: '#/definitions/badRequestResponse'
+        404:
+          $ref: '#/definitions/notFoundErrorResponse'
+        401:
+          $ref: '#definitions/unauthorisedErrorResponse'
+  /customer/order/{userId}:  
+    get:
+      description: Returns all Orders by User Id
+      tags:
+        - Customer
+        - Order
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string  
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/badRequestResponse'
+        404:
+          description: Not Found
+          schema:
+            $ref: '#/definitions/notFoundErrorResponse'
+        401:
+          description: Unauthorized Access
+          schema:
+            $ref: '#/definitions/unaauthorisedErrorResponse'  
+  /customer/order/{userId}/{orderId}:  
+    get:
+      description: Returns a user order by order Id
+      tags:
+        - Customer
+        - Order
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string  
+        - in: path
+          name: orderId
+          required: true
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          $ref: '#/definitions/badRequestResponse'
+        404:
+          $ref: '#/definitions/notFoundErrorResponse'
+        401:
+          $ref: '#/definitions/unauthorisedErrorResponse'                   
+  /customer/password/reset/{userId}:  
+    put:
+      description: Reset a customer password to a new password
+      tags:
+        - Customer       
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string          
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              newPassword:
+                type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          $ref: '#/definitions/badRequestResponse'
+        404:
+          $ref: '#/definitions/notFoundErrorResponse'
+        401:
+          $ref: '#/definitions/unauthorisedErrorResponse'     
+  /customer/reviews/{userId}:  
+    get:
+      description: Return all reviews by customer id
+      tags:
+        - Customer
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string          
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token        
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          $ref: '#/definitions/badRequestResponse'
+        404:
+          $ref: '#/definitions/notFoundErrorResponse'
+        401:
+          $ref: '#/definitions/unauthorisedErrorResponse'       
+  /customer/{userId}:  
+    get:
+      description: Gets a customer by user Id
+      tags:
+        - Customer 
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string          
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token        
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/customerResponse'
+        400:
+          $ref: '#/definitions/badRequestResponse'
+        404:
+          $ref: '#/definitions/notFoundErrorResponse'
+        401:
+          $ref: '#/definitions/unauthorisedErrorResponse'
+  /customer/all:  
+    get:
+      description: Returns all customers
+      tags:
+        - Customer  
+        - Admin     
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token        
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  type: object
+                  $ref: '#/definitions/cusrtomerResponse'
+        400:
+          $ref: '#/definitions/badRequestResponse'
+        404:
+          $ref: '#/definitions/notFoundErrorResponse'
+        401:
+          $ref: '#/definitions/unauthorisedErrorResponse'
+  /checkout/{userId}:
+    get: 
+      description: Generate a new checkout instance from cart
+      tags:
+        - Customer
+        - Checkout
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  productList:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        id:
+                          type: number
+                        sellingPrice:
+                          type: number
+                        discount:
+                          type: number
+                        image:
+                          type: string
+                        Cart_Item:
+                          type: object
+                          properties:
+                            id: 
+                              type: number
+                            quantity:
+                              type: number
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type: string
+                            ProductId:
+                              type: string
+                            CartId:
+                              type: number
+                  userId:
+                    type: string  
+                  deliveryType:
+                    type: string
+                  paymentType:
+                    type: string
+                  customerAddress:
+                    $ref: '#definitions/addressResponse'
+                  subTotal:
+                    type: number
+                  totalItemQuantity:
+                    type: number
+                  deliveryFee:
+                    type: number                
+        400:    
+          $ref: '#/definitions/badRequestResponse' 
+        401:
+          $ref: '#/definitions/notFoundErrorResponse'  
+  /checkout/address/{userId}:
+    put: 
+      description: Modifies the address in checkout
+      tags:
+        - Customer
+        - Checkout
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string
+        - in: body
+          description: Cart Information
+          required: true
+          schema:
+            type: object
+            properties:
+              productList:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    id:
+                      type: number
+                    sellingPrice:
+                      type: number
+                    discount:
+                      type: number
+                    image:
+                      type: string
+                    Cart_Item:
+                      type: object
+                      properties:
+                        id: 
+                          type: number
+                        quantity:
+                          type: number
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        ProductId:
+                          type: string
+                        CartId:
+                          type: number
+              userId:
+                type: string  
+              deliveryType:
+                type: string
+              paymentType:
+                type: string
+              customerAddress:
+                $ref: '#definitions/addressResponse'
+              subTotal:
+                type: number
+              totalItemQuantity:
+                type: number
+              deliveryFee:
+                type: number
+              newAddressId:
+                type: number            
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  productList:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        id:
+                          type: number
+                        sellingPrice:
+                          type: number
+                        discount:
+                          type: number
+                        image:
+                          type: string
+                        Cart_Item:
+                          type: object
+                          properties:
+                            id: 
+                              type: number
+                            quantity:
+                              type: number
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type: string
+                            ProductId:
+                              type: string
+                            CartId:
+                              type: number
+                  userId:
+                    type: string  
+                  deliveryType:
+                    type: string
+                  paymentType:
+                    type: string
+                  customerAddress:
+                    $ref: '#definitions/addressResponse'
+                  subTotal:
+                    type: number
+                  totalItemQuantity:
+                    type: number
+                  deliveryFee:
+                    type: number
+        400:
+          $ref: '#/definitions/badRequestResponse' 
+        401:
+          $ref: '#/definitions/notFoundErrorResponse'        
+  /checkout/payment_method/{userId}:
+    put: 
+      description: Modifies the payment method of checkout
+      tags:
+        - Customer
+        - Checkout
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string
+        - in: body
+          description: Cart Information
+          required: true
+          schema:
+            type: object
+            properties:
+              productList:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    id:
+                      type: number
+                    sellingPrice:
+                      type: number
+                    discount:
+                      type: number
+                    image:
+                      type: string
+                    Cart_Item:
+                      type: object
+                      properties:
+                        id: 
+                          type: number
+                        quantity:
+                          type: number
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        ProductId:
+                          type: string
+                        CartId:
+                          type: number
+              userId:
+                type: string  
+              deliveryType:
+                type: string
+              paymentType:
+                type: string
+              customerAddress:
+                $ref: '#definitions/addressResponse'
+              subTotal:
+                type: number
+              totalItemQuantity:
+                type: number
+              deliveryFee:
+                type: number
+              newPaymentType:
+                type: string            
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  productList:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        id:
+                          type: number
+                        sellingPrice:
+                          type: number
+                        discount:
+                          type: number
+                        image:
+                          type: string
+                        Cart_Item:
+                          type: object
+                          properties:
+                            id: 
+                              type: number
+                            quantity:
+                              type: number
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type: string
+                            ProductId:
+                              type: string
+                            CartId:
+                              type: number
+                  userId:
+                    type: string  
+                  deliveryType:
+                    type: string
+                  paymentType:
+                    type: string
+                  customerAddress:
+                    $ref: '#definitions/addressResponse'
+                  subTotal:
+                    type: number
+                  totalItemQuantity:
+                    type: number
+                  deliveryFee:
+                    type: number
+        400:
+          $ref: '#/definitions/badRequestResponse' 
+        401:
+          $ref: '#/definitions/notFoundErrorResponse'
+  /checkout/delivery_type/{userId}:
+    put: 
+      description: Modifies thedelivery type of checkout
+      tags:
+        - Customer
+        - Checkout
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string
+        - in: body
+          description: Cart Information
+          required: true
+          schema:
+            type: object
+            properties:
+              productList:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    id:
+                      type: number
+                    sellingPrice:
+                      type: number
+                    discount:
+                      type: number
+                    image:
+                      type: string
+                    Cart_Item:
+                      type: object
+                      properties:
+                        id: 
+                          type: number
+                        quantity:
+                          type: number
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        ProductId:
+                          type: string
+                        CartId:
+                          type: number
+              userId:
+                type: string  
+              deliveryType:
+                type: string
+              paymentType:
+                type: string
+              customerAddress:
+                $ref: '#definitions/addressResponse'
+              subTotal:
+                type: number
+              totalItemQuantity:
+                type: number
+              deliveryFee:
+                type: number
+              newDeliveryType:
+                type: string
+                            
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  productList:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                        id:
+                          type: number
+                        sellingPrice:
+                          type: number
+                        discount:
+                          type: number
+                        image:
+                          type: string
+                        Cart_Item:
+                          type: object
+                          properties:
+                            id: 
+                              type: number
+                            quantity:
+                              type: number
+                            createdAt:
+                              type: string
+                            updatedAt:
+                              type: string
+                            ProductId:
+                              type: string
+                            CartId:
+                              type: number
+                  userId:
+                    type: string  
+                  deliveryType:
+                    type: string
+                  paymentType:
+                    type: string
+                  customerAddress:
+                    $ref: '#definitions/addressResponse'
+                  subTotal:
+                    type: number
+                  totalItemQuantity:
+                    type: number
+                  deliveryFee:
+                    type: number
+        400:
+          $ref: '#/definitions/badRequestResponse' 
+        401:
+          $ref: '#/definitions/notFoundErrorResponse'
+  /cart/{userId}/{productId}:
+    put:
+      description: Add product to Cart via customer id and product id
+      tags:
+        - Cart
+        - Customer
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string
+        - in: path
+          name: productId
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  status:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+                  CustomerId:
+                    type: number
+        400:
+          $ref: '#/definitions/badRequestResponse'  
+  /cart/{userId}:
+    get:
+      description: Retrieve a Customers cart via user Id
+      tags:
+        - Cart
+        - Customer
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    id:
+                      type: number
+                    sellinPrice:
+                      type: number
+                    discount:
+                      type: number
+                    image:
+                      type: number
+                    Cart_Item:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        quantity:
+                          type: number
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        ProductId:
+                          type: number
+                        CartId:
+                          type: number
+        400:
+          $ref: '#/definitions/badRequestResponse'               
+  /cart/product/{userId}/{productId}/{action}:
+    put:
+      description: Increment or decrement cart item quantity
+      tags:
+        - Cart
+        - Customer
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: number
+          description: Id of the customer
+          example: 1
+        - in: path
+          name: productId
+          required: true
+          description: Id of the product
+          type: number
+          example: 1
+        - in: path
+          name: action
+          required: true
+          description: action to perform on cart item quantity
+          type: string
+          example: INCREMENT
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties: 
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    id:
+                      type: number
+                    sellinPrice:
+                      type: number
+                    discount:
+                      type: number
+                    image:
+                      type: number
+                    Cart_Item:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        quantity:
+                          type: number
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        ProductId:
+                          type: number
+                        CartId:
+                          type: number
+        400:
+          $ref: '#/definitions/badRequestResponse'
+  /order/{userId}:
+    post:
+      description: Create an order for the specified user
+      tags:
+        - Order
+        - Customer
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: Specified User
+          type: string
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer <token>
+        - in: body
+          required: true
+          description: Object generated from checkout
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  productList:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      title:
+                        type: string
+                      id:
+                        type: number
+                      sellingPrice:
+                        type: number
+                      discount:
+                        type: number
+                      image:
+                        type: string
+                      Cart_Item:
+                        type: object
+                        properties:
+                          id: 
+                            type: number
+                          quantity:
+                            type: number
+                          createdAt:
+                            type: string
+                          updatedAt:
+                            type: string
+                          ProductId:
+                            type: string
+                          CartId:
+                            type: number
+                  userId:
+                    type: string  
+                  deliveryType:
+                    type: string
+                  paymentType:
+                    type: string
+                  customerAddress:
+                    $ref: '#definitions/addressResponse'
+                  subTotal:
+                    type: number
+                  totalItemQuantity:
+                    type: number
+                  deliveryFee:
+                    type: number
+      responses:
+  /order/verify/{transactionReference}:
+    get:
+      description: Verify order transactionn by transaction reference
+      tags:
+        - Order
+        - Customer
+      parameters:
+        - in: path
+          name: transactionReference
+          description: Transaction reference string to verify 
+          type: string
+          required: true
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success: 
+                type: boolean  
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /order/verify/shipment/{transactionReference}:
+    get:
+      description: Confirm Order shipment
+      tags:
+        - Customer
+        - Order
+        - Logistics
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer <token>
+        - in: path
+          name: transactionReference
+          type: string
+          description: transaction reference of order to be shipped
+          required: true
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: Bad request
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /order/delivery/{transactionReference}:
+    post:
+      description: Initiatiate a shipment delivery
+      tags:
+        - Logistics
+        - Order
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer <token>
+        - in: path
+          name: transactionReference
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+    put:
+      description: Confirm a shipment delivery
+      tags:
+        - Logistics
+        - Order
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer <token>
+        - in: path
+          name: transactionReference
+          required: true
+          type: string
+        - in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              deliveryCode:
+                type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /review/{userId}/{productId}:
+    post:
+      description: Allow a user leave a review for a product via User id and Product Id
+      tags:
+        - Review
+        - Customer
+        - Product
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          example: Bearer <token>
+        - in: path
+          name: userId
+          required: true
+          type: string
+        - in: path
+          name: productId
+          required: true
+          type: string
+        - in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              content:
+                type: string
+              rating:
+                type: number
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object  
+        400:
+          description: Not 
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /review/{reviewId}:
+    put:
+      description: Update review content and rating
+      tags:
+        - Customer
+        - Review
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          example: Bearer <token>
+        - in: path
+          name: reviewId
+          required: true
+          type: string
+        - in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              content:
+                type: string
+              rating:
+                type: number
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        401:
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+    delete:
+      description: Delete Review
+      tags:
+        - Customer
+        - Review
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          example: Bearer <token>
+        - in: path
+          name: reviewId
+          required: true
+          type: string        
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        401:
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:  
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /review/all/?userId&productId:
+    get:
+      description: Return All reviews
+      tags:
+        - Customer
+        - Review
+        - Product
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          example: Bearer <token>
+        - in: query
+          name: userId          
+          type: string
+        - in: query
+          name: productId          
+          type: string        
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: array
+        401:
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /review/{userId}:
+    get:
+      description: Returns a users reviews
+      tags:
+        - Customer
+        - Review
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          example: Bearer <token>
+        - in: path
+          name: userId
+          required: true
+          type: string        
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: array
+        401:
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        400:
+          description: bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object  
+  /promo:
+    post:
+      description: Create a new promo code, promo codes is to be created by platform admin
+      tags: 
+        - Promocode
+        - Admin
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+        - in: body
+          description: Promo code details
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+              discount:
+                type: number
+              startDate:
+                type: string
+                example: YYYY/MM/DD
+              endDate:
+                type: string
+                example: YYYY/MM/DD
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: true
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  used:
+                    type: number
+                  code:
+                    type: string
+                  discount:
+                    type: number
+                  startDate:
+                    type: string
+                  endDate:
+                    type: string
+                  updatedAt:
+                    type: string
+                  createdAt:
+                    type: string
+        400:
+          description: Bad request
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object  
+        401:
+          description: Unauthorized
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object  
+  /promo/?promoId:  
+    get:
+      description: Returns all promo codes, can also be queried by promoId
+      tags: 
+        - Promocode
+        - Admin
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: promoId
+          type: string
+          description: PromoId to be queried by
+        - in: header
+          name: Authorization
+          required: true
+          type: string        
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: true
+              message:
+                type: string
+              data:
+                type: object
+                properties:
+                  used:
+                    type: number
+                  code:
+                    type: string
+                  discount:
+                    type: number
+                  startDate:
+                    type: string
+                  endDate:
+                    type: string
+                  updatedAt:
+                    type: string
+                  createdAt:
+                    type: string
+        400:
+          description: Bad request
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object  
+        401:
+          description: Unauthorized
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /promo/{promoId}:
+    delete:
+      description: Returns all promo codes, can also be queried by promoId
+      tags: 
+        - Promocode
+        - Admin
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: promoId
+          type: string
+          description: PromoId to be deleted
+        - in: header
+          name: Authorization
+          required: true
+          type: string        
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: true
+              message:
+                type: string
+              data:
+                type: object                
+        400:
+          description: Bad request
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object  
+        401:
+          description: Unauthorized
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /transaction/{vendorId}/?{orderId}:
+    get:
+      description: Returns all Transactions, can be queried by order id
+      tags:
+        - Transaction
+        - Vendor
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: orderId
+          required: true
+          type: string
+          description: Id or order to be queried
+        - in: path
+          name: vendorId
+          required: true
+          type: string
+          description: Id of vendor
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        401:
+          description: Unauthorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        500:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+  /transaction/{transactionReference}:
+    put:
+      description: Verify a transaction
+      tags:
+        - Transaction
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: transactionReference
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        401:
+          description: Unauthorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        500:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+    get:
+      description: Returns transaction by transaction reference
+      tags:
+        - Transaction
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          example: Bearer Token
+        - in: path
+          name: transactionReference
+          required: true
+          type: string
+      responses:
+        200:
+          description: okay
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        401:
+          description: Unauthorised
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+        500:
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
+      
+
+
+
+definitions:
+  customerResponse:
+    type: object
+    properties:
+      verified:
+        type: boolean
+      RoleId:
+        type: number
+      id:
+        type: number
+      name:
+        type: string
+      email:
+        type: string
+      phoneNumber:
+        type: string
+      password:
+        type: string
+      verificationToken:
+        type: string
+      updatedAt:
+        type: string
+      createdAt:
+        type: string
+  customer:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        type: string
+  unathorisedResponse:
+    400:
+      description: Bad request error
+      schema: 
+        type: object
+        properties:
+          success:
+            type: boolean
+          message:
+            type: string
+            example: Unathorized access
+          error:
+            type: string 
+          data:
+            type: object
+  staffresponse:
+    type: object
+    properties:
+      verified: 
+        type: boolean
+        example: false
+      verifiedPhoneNumber:
+        type: boolean
+        example: false
+      id:
+        type: Number
+        example: 2
+      firstName:
+        type: string
+        example: Sam
+      lastName:
+        type: string
+        example: john
+      middleName:
+        type: string
+        example: sarah
+      phoneNumber:
+        type: string
+        example: 1222322424
+      email:
+        type: string
+        example: john@example.com
+      passwordHash:
+        type: string
+        example: wddsfsfsfdfefafaDD#$#RFSS
+      verificationToken:
+        type: string
+        example: adadsdsdssdsdadadadssffs
+      updatedAt:
+        type: string
+        example: 2023-11-11T18:11:16.896Z
+      createdAt:
+        type: string
+        example: 2023-11-11T18:11:16.896Z
+      RoleId:
+        type: Number
+        example: 2
+  product:
+    type: object
+    properties:
+      title:
+        type: string
+      metaTitle:
+        type: string
+      sellingPrice:
+        type: number
+      costPrice:
+        type: number
+      discount:
+        type: number
+      quantity:
+        type: number
+      longDescription:
+        type: string
+      expiryDate:
+        type: string
+      categoryId:
+        type: string
+  staff:
+    type: object
+    properties:
+      firstName:
+        type: string
+      middleName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      roleId:
+        type: number
+      phoneNumber:
+        type: string
+  productresponse:
+    type: object
+    properties:
+      views:
+        type: number
+      likes:
+        type: number
+      id:
+        type: number
+      title:
+        type: string
+      metaTitle:
+        type: string
+      sellingPrice:
+        type: number
+      costPrice:
+        type: number
+      discount:
+        type: number
+      quantity:
+        type: number
+      longDescription:
+        type: string
+      expiryDate:
+        type: string
+      updatedAt:
+        type: string
+      createdAt:
+        type: string
+      vendorId:
+        type: string
+  review:
+    type: object
+    properties:
+      content:
+        type: string
+      rating:
+        type: number
+  reviewResponseObject:
+    type: object
+    properties:
+      id:
+        type: number
+      content:
+        type: string
+      productId:
+        type: number
+      rating:
+        type: number
+      CustomerId:
+        type: number
+      updatedAt:
+        type: string
+      createdAt:
+        type: string 
+  badRequestResponse:
+   description: Bad Request
+   schema:
+    type: object
+    properties:
+      success:
+        type: boolean
+      message:
+        type: string
+      error:
+        type: string
+      data:
+        type: object
+  notFoundErrorResponse:
+    description: Not found
+    schema: 
+      type: object
+      properties:
+        success: 
+          type: boolean
+        message:
+          type: string
+        error:
+          type: string
+        data:
+          type: object
+  unauthorisedErrorResponse:
+    description: Unauthorized Access
+    schema:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        error:
+          type: string
+        data:
+          type: object
+  addressResponse:
+    type: object
+    properties:
+      id:
+        type: number
+      defaultAddress:
+        type: string
+      line1:
+        type: string
+      line2: 
+        type: string
+      city:
+        type: string
+      State:
+        type: string
+      nearestLandmark:
+        type: string
+      country:
+        type: string
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
+      CustomerId:
+        type: number    
