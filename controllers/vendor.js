@@ -1,8 +1,8 @@
 const crypto = require('crypto');
 const Vendor = require('../models/vendor');
-const Order = require('../models/order')
-const ProductReview = require('../models/product_review')
-const Product = require('../models/product')
+const Order = require('../models/order');
+const ProductReview = require('../models/product_review');
+const Product = require('../models/product');
 const { hashPassword, comparePassword } = require('../utils/hashPassword');
 const { sendMail, sendPasswordResetMail } = require('../utils/email');
 const { signUser } = require('../utils/authorisation');
@@ -124,55 +124,59 @@ const resetPassword = async (req, res) => {
   });
 };
 const viewAllOrder = async (req, res) => {
-    let allOrders = [];
-    try {
-      const { vendorId } = req.params;
-      allOrders = await Order.findAll({ where: { VendorId: vendorId }, include: Product });
-    } catch (err) {
-      return res.status(response.BAD_REQUEST).json({
-        success: false, message: 'Cannot retrieve orders', error: err.message, data: {},
-      });
-    }
-    return res.status(response.OK).json({
-      success: true, message: 'success', data: allOrders,
+  let allOrders = [];
+  try {
+    const { vendorId } = req.params;
+    allOrders = await Order.findAll({ where: { VendorId: vendorId }, include: Product });
+  } catch (err) {
+    return res.status(response.BAD_REQUEST).json({
+      success: false, message: 'Cannot retrieve orders', error: err.message, data: {},
     });
+  }
+  return res.status(response.OK).json({
+    success: true, message: 'success', data: allOrders,
+  });
 };
 const viewOrder = async (req, res) => {
-    let order;
-    try {
-      const { vendorId, orderId } = req.params;
-      order = await Order.findAll({ where: { id: orderId, VendorId: vendorId }, include: Product });
-    } catch (err) {
-      return res.status(response.BAD_REQUEST).json({
-        success: false, message: 'Cannot retrieve order detail', error: err.message, data: {},
-      });
-    }
-    return res.status(response.OK).json({
-      success: true, message: 'success', data: order,
+  let order;
+  try {
+    const { vendorId, orderId } = req.params;
+    order = await Order.findAll({ where: { id: orderId, VendorId: vendorId }, include: Product });
+  } catch (err) {
+    return res.status(response.BAD_REQUEST).json({
+      success: false, message: 'Cannot retrieve order detail', error: err.message, data: {},
     });
-}; 
-  
+  }
+  return res.status(response.OK).json({
+    success: true, message: 'success', data: order,
+  });
+};
+
 const reviews = async (req, res) => {
-    let userReviews = [];
-    try {
-        const { vendorId } = req.params;
-        const { productId } = req.query
-        
-        if (!productId) {
-            userReviews = await ProductReview.findAll({ where: { VendorId: vendorId }, include: Product });
-            
-        }
-        userReviews = await ProductReview.findAll({ where: { VendorId: vendorId, ProductId:productId}, include: Product });
-      
-    } catch (err) {
-      return res.status(response.BAD_REQUEST).json({
-        success: false, message: 'Cannot retrieve user reviews', error: err.message, data: {},
+  let userReviews = [];
+  try {
+    const { vendorId } = req.params;
+    const { productId } = req.query;
+
+    if (!productId) {
+      userReviews = await ProductReview.findAll({
+        where:
+                { VendorId: vendorId },
+        include: Product,
       });
     }
-    return res.status(response.OK).json({
-      success: true, message: 'success', data: userReviews,
+    userReviews = await ProductReview.findAll({
+      where: { VendorId: vendorId, ProductId: productId }, include: Product,
     });
-  };
+  } catch (err) {
+    return res.status(response.BAD_REQUEST).json({
+      success: false, message: 'Cannot retrieve user reviews', error: err.message, data: {},
+    });
+  }
+  return res.status(response.OK).json({
+    success: true, message: 'success', data: userReviews,
+  });
+};
 module.exports = {
-  signUp, login, resetPassword, resetPasswordRequest, verifyEmail, viewAllOrder, viewOrder, reviews
+  signUp, login, resetPassword, resetPasswordRequest, verifyEmail, viewAllOrder, viewOrder, reviews,
 };
