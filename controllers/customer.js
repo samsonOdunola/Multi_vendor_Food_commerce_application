@@ -23,7 +23,7 @@ const signup = async (req, res) => {
     await sendMail(email, verificationToken);
 
     user = await Customer.create({
-      name, email, phoneNumber, password: passwordHash, verificationToken,
+      name, email, phoneNumber, password: passwordHash, verificationToken, RoleId: 1,
     });
   } catch (err) {
     return res.status(response.BAD_REQUEST).json({

@@ -2057,6 +2057,7 @@ paths:
       parameters:
         - in: body
           required: true
+          name: customer info
           schema:
             $ref: '#/definitions/customer'
       responses:
@@ -2137,8 +2138,9 @@ paths:
       parameters:
         - in: body
           required: true
+          name: login details
           schema:
-            type: object
+            type: object            
             properties:
               email:
                 type: string

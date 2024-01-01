@@ -11,7 +11,7 @@ Role.init({
     primaryKey: true,
   },
   title: {
-    type: DataTypes.ENUM('Owner', 'Admin', 'Inventory', 'Logistics', 'Finance', 'Customer'),
+    type: DataTypes.ENUM('Owner', 'Admin', 'Inventory', 'Logistics', 'Finance', 'Customer', 'Vendor'),
     allowNull: false,
 
   },

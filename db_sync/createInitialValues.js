@@ -11,7 +11,28 @@ const customerPermissions = [
   },
   { resource: 'Transaction', readOwn: true },
 ];
-const ownerPermissions = [{
+
+const vendorPermissions = [
+
+  { resource: 'Order', readOwn: true },
+
+  { resource: 'Review', readOwn: true },
+
+  { resource: 'Transaction', readOwn: true },
+  {
+    resource: 'Product', readOwn: true, write: true, updateOwn: true, removeOwn: true,
+  },
+  { resource: 'Vendor', readOwn: true, updateOwn: true },
+  {
+    resource: 'Staff', readOwn: true, write: true, updateOwn: true, removeOwn: true,
+  },
+  {
+    resource: 'Role', readOwn: true, write: true, updateOwn: true, removeOwn: true,
+  },
+
+];
+
+const adminPermissions = [{
   resource: 'All', readAny: true, readOwn: true, write: true, updateAny: true, updateOwn: true, removeAny: true, removeOwn: true,
 }];
 const initRoles = async () => {
@@ -21,13 +42,14 @@ const initRoles = async () => {
     if (customerRole.length === 0) {
       await Role.create({ title: 'Customer' });
     }
-    const ownerRole = await Role.findAll({ where: { title: 'Owner' } });
-    if (ownerRole.length === 0) {
-      await Role.create({ title: 'Owner' });
-    }
+
     const adminRole = await Role.findAll({ where: { title: 'Admin' } });
     if (adminRole.length === 0) {
       await Role.create({ title: 'Admin' });
+    }
+    const vendorRole = await Role.findAll({ where: { title: 'Vendor' } });
+    if (vendorRole.length === 0) {
+      await Role.create({ title: 'Vendor' });
     }
   } catch (err) {
     return 'Error in creating init roles';
@@ -55,13 +77,31 @@ const initPermission = async () => {
 
       });
     });
-    const owner = await Role.findOne({ where: { title: 'Owner' } });
-    ownerPermissions.map(async (permission) => {
+    const admin = await Role.findOne({ where: { title: 'Admin' } });
+    adminPermissions.map(async (permission) => {
       const {
         resource, readAny, readOwn, write, updateAny, updateOwn, removeAny, removeOwn,
       } = permission;
       await RolePermission.create({
-        RoleId: owner.id,
+        RoleId: admin.id,
+        resource,
+        readAny,
+        readOwn,
+        write,
+        updateAny,
+        updateOwn,
+        removeAny,
+        removeOwn,
+
+      });
+    });
+    const vendor = await Role.findOne({ where: { title: 'Vendor' } });
+    vendorPermissions.map(async (permission) => {
+      const {
+        resource, readAny, readOwn, write, updateAny, updateOwn, removeAny, removeOwn,
+      } = permission;
+      await RolePermission.create({
+        RoleId: vendor.id,
         resource,
         readAny,
         readOwn,

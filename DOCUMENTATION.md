@@ -13,6 +13,7 @@
 * Address
 * Review
 * Logistic
+* Vendor
 
 ## Roles
 * Owner

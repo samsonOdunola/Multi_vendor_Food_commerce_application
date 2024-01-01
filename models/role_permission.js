@@ -10,7 +10,7 @@ RolePermission.init({
     autoIncrement: true,
   },
   resource: {
-    type: DataTypes.ENUM('All', 'Customer', 'Staff', 'Transaction', 'Order', 'Cart', 'Product', 'RolePermission', 'Role', 'Address', 'Review', 'Logistic', 'PromoCode'),
+    type: DataTypes.ENUM('All', 'Customer', 'Staff', 'Transaction', 'Order', 'Cart', 'Product', 'RolePermission', 'Role', 'Address', 'Review', 'Logistic', 'PromoCode', 'Vendor'),
     allowNull: false,
   },
   readAny: {
