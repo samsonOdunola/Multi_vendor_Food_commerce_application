@@ -119,6 +119,7 @@ The application provides the following API endpoints:
   - GET: Returns all categories for the system
 
 Please refer to the [swagger documentation](http://localhost:3000/api-docs/) after running the application for full and detailed information API endpoints.
+API documentation can also be found in the [swagger yaml file](/api.yaml)
 
 ## Database Schema
 
